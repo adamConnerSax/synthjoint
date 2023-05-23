@@ -1,8 +1,16 @@
 # recoding acs_microdata to CCES
 library(ccesMRPprep)
 
-#SCHL
-# acs_microdata %>% mutate(Edu6 = recode_education(SCHL))
+recode_age5 <- function(x) {
+    case_when(
+        x > 17 & x < 25 ~ "18 to 24 years",
+        x > 24 & x < 35 ~ "25 to 34 years",
+        x > 34 & x < 45 ~ "35 to 45 years",
+        x > 44 & x < 65 ~ "45 to 64 years",
+        x > 64 ~ "65 years and over"
+    )
+}
+
 recode_education <- function(x) {
     case_when(
         x < 16 ~ "No HS",
@@ -14,8 +22,6 @@ recode_education <- function(x) {
     )
 }
 
-#SCHL
-# acs_microdata %>% mutate(Edu4 = recode_education4(SCHL))
 recode_education4 <- function(x) {
     case_when(
         x <= 17 ~ "HS or Less",
@@ -25,18 +31,6 @@ recode_education4 <- function(x) {
     )
 }
 
-# acs_microdata %>% filter(AGEP > 17) %>% mutate(Age5 = recode_age5(AGEP))
-recode_age5 <- function(x) {
-    case_when(
-        x > 17 & x < 25 ~ "18 to 24 years",
-        x > 24 & x < 35 ~ "25 to 34 years",
-        x > 34 & x < 45 ~ "35 to 45 years",
-        x > 44 & x < 65 ~ "45 to 64 years",
-        x > 64 ~ "65 years and over"
-    )
-}
-
-# acs_microdata %>% mutate(Sex2 = recode_sex2(SEX))
 recode_sex2 <- function(x) {
     case_when(
         x == 1 ~ "Male",
@@ -44,7 +38,6 @@ recode_sex2 <- function(x) {
     )
 }
 
-# acs_microdata %>% mutate(Race8 = recode_race8(RAC1P, HISP))
 recode_race8 <- function(x, y) {
     case_when(
         y > 1 ~ "Hispanic",
